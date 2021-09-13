@@ -6,8 +6,9 @@ import 'package:tradelist/pages/logpage.dart';
 import 'package:tradelist/pages/pageviewer.dart';
 import 'package:tradelist/pages/tradelist.dart';
 import 'package:tradelist/utilites/toolsUtilities.dart';
-
+import 'line_chart_page.dart';
 import 'saleshomepage.dart';
+
 
 
 class StarterPage extends StatefulWidget {

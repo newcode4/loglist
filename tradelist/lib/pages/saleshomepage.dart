@@ -18,11 +18,10 @@ class _GraphPageState extends State<GraphPage> {
     _seriesBarData.add(
       charts.Series(
         domainFn: (Sales sales, _) => sales.title.toString(),
-        measureFn: (Sales sales, _) => int.parse(sales.sellTotal),
-
+        measureFn: (Sales sales, _) => int.parse(sales.month_total),
         id: 'Sales',
         data: mydata,
-        labelAccessorFn: (Sales row, _) => "${row.title}",
+        labelAccessorFn: (Sales row, _) => "${row.month_total}원",
       ),
     );
   }
@@ -31,14 +30,14 @@ class _GraphPageState extends State<GraphPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sales')),
+      appBar: AppBar(title: Text('막대 그래프',style: TextStyle(fontWeight: FontWeight.bold),),centerTitle: true,),
       body: _buildBody(context),
     );
   }
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('sell_data').snapshots(),
+      stream: Firestore.instance.collection('month_result').orderBy('title',descending: false).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
@@ -60,24 +59,21 @@ class _GraphPageState extends State<GraphPage> {
         child: Center(
           child: Column(
             children: <Widget>[
-              Text(
-                'Sales by Year',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-              ),
+
               SizedBox(
                 height: 10.0,
               ),
               Expanded(
                 child: charts.BarChart(_seriesBarData,
                     animate: true,
-                    animationDuration: Duration(seconds:5),
+                    animationDuration: Duration(seconds:1),
                      behaviors: [
-                      new charts.DatumLegend(
-                        entryTextStyle: charts.TextStyleSpec(
-                            color: charts.MaterialPalette.purple.shadeDefault,
-                            fontFamily: 'Georgia',
-                            fontSize: 18),
-                      )
+                      // new charts.DatumLegend(
+                      //   entryTextStyle: charts.TextStyleSpec(
+                      //       color: charts.MaterialPalette.black,
+                      //       fontFamily: 'Georgia',
+                      //       fontSize: 12),
+                      // )
                     ],
                   ),
               ),

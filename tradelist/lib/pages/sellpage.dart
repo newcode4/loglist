@@ -3,10 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:tradelist/common/Constants.dart';
-import 'package:tradelist/common/dialog.dart';
 import 'package:tradelist/model/GetxController.dart';
-import 'package:tradelist/model/item_model.dart';
 import 'package:tradelist/utilites/toolsUtilities.dart';
 
 SellPageState pageState;
