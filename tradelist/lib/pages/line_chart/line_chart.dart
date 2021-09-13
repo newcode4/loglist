@@ -1,12 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LineChartSample2 extends StatefulWidget {
+class LineChartSample extends StatefulWidget {
   @override
-  _LineChartSample2State createState() => _LineChartSample2State();
+  _LineChartSampleState createState() => _LineChartSampleState();
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _LineChartSampleState extends State<LineChartSample> {
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),
@@ -51,8 +51,8 @@ class _LineChartSample2State extends State<LineChartSample2> {
               });
             },
             child: Text(
-              'avg',
-              style: TextStyle(
+              '평균',
+              style: TextStyle(fontWeight: FontWeight.bold,
                   fontSize: 12, color: showAvg ? Colors.white.withOpacity(0.5) : Colors.black),
             ),
           ),

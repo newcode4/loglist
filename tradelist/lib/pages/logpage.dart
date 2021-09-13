@@ -55,9 +55,20 @@ class LogPageState extends State<LogPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: const Text(
-            '이용자 금액, 수익률 들어갈 예정',
-            style: TextStyle(color: Colors.black),
+          title: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(onTap: (){},
+                        child: Text('평가 금액 :  4980000원',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)),
+                  ],
+                ),
+                Text('총 수익금 :  4900000원  수익률 : %40',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold)),
+              ],
+            ),
           ),
           backgroundColor: Colors.white,
           centerTitle: true,
@@ -76,7 +87,7 @@ class LogPageState extends State<LogPage> {
         body: ListView(
           children: <Widget>[
             Container(
-                height: 500,
+                height:  MediaQuery.of(context).size.height,
                 child: StreamBuilder<QuerySnapshot>(
                     stream: Firestore.instance
                         .collection(buyName)

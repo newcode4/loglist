@@ -2,11 +2,12 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tradelist/common/graph.dart';
+import 'package:tradelist/common/movegraph.dart';
 import 'package:tradelist/pages/logpage.dart';
 import 'package:tradelist/pages/pageviewer.dart';
 import 'package:tradelist/pages/tradelist.dart';
 import 'package:tradelist/utilites/toolsUtilities.dart';
-import 'line_chart_page.dart';
+import 'line_chart/line_chart_page.dart';
 import 'saleshomepage.dart';
 
 
@@ -26,7 +27,7 @@ class _StarterPageState extends State<StarterPage> {
     List<Widget> tabs = [
       TradeList(),
       LogPage(),
-      GraphPage(),
+      MoveGraph(),
     ];
 
     return Scaffold(

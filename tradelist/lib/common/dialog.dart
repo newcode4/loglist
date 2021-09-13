@@ -629,6 +629,7 @@ LogDiaLog(context, String title, String Volume, int datatotal) {
                             );
                             insertData(product.toMap());
                             updateData({'month_total' : btotal});
+                            print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
 
                             // if(int.parse(btotal)<0) color.write('resultcolor', Colors.blue);
 
