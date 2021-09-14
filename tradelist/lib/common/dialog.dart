@@ -628,8 +628,10 @@ LogDiaLog(context, String title, String Volume, int datatotal) {
                               sellTotal: btotal,
                             );
                             insertData(product.toMap());
-                            updateData({'month_total' : btotal});
-                            print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
+                            String vtotal = box.read('result${DateTime.now().subtract(Duration(days:7)).month}');
+                            String stotal = (int.parse(vtotal)+int.parse(btotal)).toString();
+                            updateData({'month_total' : stotal});
+
 
                             // if(int.parse(btotal)<0) color.write('resultcolor', Colors.blue);
 

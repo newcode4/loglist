@@ -47,8 +47,14 @@ class _GraphPageState extends State<GraphPage> {
           List<Sales> sales = snapshot.data.documents
               .map((documentSnapshot) => Sales.fromMap(documentSnapshot.data))
               .toList();
-          _seriesBarData = List<charts.Series<Sales, String>>();
-          // box.write('result${DateTime.now().subtract(Duration(days:7)).month}', );
+
+         Firestore.instance.collection("month_result").document("${DateTime.now().subtract(Duration(days:7)).month}")
+        .get()      .then((DocumentSnapshot ds){
+          var sales2 = ds.data["month_total"];
+
+          box.write('result${DateTime.now().subtract(Duration(days:7)).month}',sales2 );
+          print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
+         });
           return _buildChart(context, sales);
         }
       },
