@@ -42,7 +42,7 @@ class SellPageState extends State<SellPage> {
       body: ListView(
         children: <Widget>[
           Container(
-              height: 500,
+              height: MediaQuery.of(context).size.height,
               child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance
                       .collection(sellName)

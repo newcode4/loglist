@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:tradelist/common/Constants.dart';
 import 'package:tradelist/pages/sales.dart';
 
 class GraphPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _GraphPageState extends State<GraphPage> {
       ),
     );
   }
+
   
 
   @override
@@ -45,6 +47,14 @@ class _GraphPageState extends State<GraphPage> {
           List<Sales> sales = snapshot.data.documents
               .map((documentSnapshot) => Sales.fromMap(documentSnapshot.data))
               .toList();
+
+         Firestore.instance.collection("month_result").document("${DateTime.now().subtract(Duration(days:7)).month}")
+        .get()      .then((DocumentSnapshot ds){
+          var sales2 = ds.data["month_total"];
+
+          box.write('result${DateTime.now().subtract(Duration(days:7)).month}',sales2 );
+          print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
+         });
           return _buildChart(context, sales);
         }
       },
