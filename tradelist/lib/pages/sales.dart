@@ -3,9 +3,10 @@ class Sales {
   String sellPrice;
   String month_total;
   String sellVolume;
+  String month;
   String sellMonth;
   String sellYeal;
-  Sales(this.title,this.sellPrice,this.month_total,this.sellVolume,this.sellMonth,this.sellYeal);
+  Sales(this.title,this.sellPrice,this.month_total,this.sellVolume,this.sellMonth,this.month);
 
   Sales.fromMap(Map<String, dynamic> map)
       :
@@ -17,8 +18,10 @@ class Sales {
         sellVolume = map['sellVolume'],
         sellMonth = map['sellMonth'],
         sellPrice = map['sellPrice'],
+        month = map['month'],
         month_total=map['month_total'];
 
+
   @override
-  String toString() => "Record<$title:$sellVolume:$month_total:$sellPrice:$sellMonth>";
+  String toString() => "Record<$title:$sellVolume:$month_total:$sellPrice:$sellMonth:$month>";
 }

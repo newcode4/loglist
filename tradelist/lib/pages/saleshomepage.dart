@@ -14,6 +14,7 @@ class GraphPage extends StatefulWidget {
 class _GraphPageState extends State<GraphPage> {
   List<charts.Series<Sales, String>> _seriesBarData;
   List<Sales> mydata;
+
   _generateData(mydata) {
     _seriesBarData = List<charts.Series<Sales, String>>();
     _seriesBarData.add(
@@ -27,19 +28,22 @@ class _GraphPageState extends State<GraphPage> {
     );
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('막대 그래프',style: TextStyle(fontWeight: FontWeight.bold),),centerTitle: true,),
+      appBar: AppBar(
+        title: Text('막대 그래프'),
+      ),
       body: _buildBody(context),
     );
   }
 
   Widget _buildBody(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('month_result').orderBy('title',descending: false).snapshots(),
+      stream: Firestore.instance
+          .collection('month_result')
+          .orderBy('sort', descending: false)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return LinearProgressIndicator();
@@ -48,18 +52,24 @@ class _GraphPageState extends State<GraphPage> {
               .map((documentSnapshot) => Sales.fromMap(documentSnapshot.data))
               .toList();
 
-         Firestore.instance.collection("month_result").document("${DateTime.now().subtract(Duration(days:7)).month}")
-        .get()      .then((DocumentSnapshot ds){
-          var sales2 = ds.data["month_total"];
+          Firestore.instance
+              .collection("month_result")
+              .document("0${DateTime.now().subtract(Duration(days: 7)).month}")
+              .get()
+              .then((DocumentSnapshot ds) {
+            var sales2 = ds.data["month_total"];
 
-          box.write('result${DateTime.now().subtract(Duration(days:7)).month}',sales2 );
-          print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
-         });
+            box.write(
+                'result${DateTime.now().subtract(Duration(days: 7)).month}',
+                sales2);
+            // print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
+          });
           return _buildChart(context, sales);
         }
       },
     );
   }
+
   Widget _buildChart(BuildContext context, List<Sales> saledata) {
     mydata = saledata;
     _generateData(mydata);
@@ -69,23 +79,17 @@ class _GraphPageState extends State<GraphPage> {
         child: Center(
           child: Column(
             children: <Widget>[
-
               SizedBox(
                 height: 10.0,
               ),
               Expanded(
-                child: charts.BarChart(_seriesBarData,
-                    animate: true,
-                    animationDuration: Duration(seconds:1),
-                     behaviors: [
-                      // new charts.DatumLegend(
-                      //   entryTextStyle: charts.TextStyleSpec(
-                      //       color: charts.MaterialPalette.black,
-                      //       fontFamily: 'Georgia',
-                      //       fontSize: 12),
-                      // )
-                    ],
-                  ),
+                child: charts.BarChart(
+                  _seriesBarData,
+                  selectionModels: [new charts.SelectionModelConfig()],
+                  animate: true,
+                  animationDuration: Duration(seconds: 1),
+                  behaviors: [],
+                ),
               ),
             ],
           ),

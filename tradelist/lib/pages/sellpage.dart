@@ -35,6 +35,8 @@ class SellPageState extends State<SellPage> {
 
   final controller = Get.put(BuilderController());
 
+  var f = NumberFormat('###,###,###,###');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +120,7 @@ class SellPageState extends State<SellPage> {
                                             ),
                                           ),
                                           subtitle: Text(
-                                            "\n거래차익 : ${document[sellTotal]}원",
+                                            "\n거래차익 : ${f.format(int.parse(document[sellTotal]))}원",
                                             style: TextStyle(
                                               fontSize: 12.5,
                                               fontFamily: 'RobotoMono',

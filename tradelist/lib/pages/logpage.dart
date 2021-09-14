@@ -24,6 +24,7 @@ class LogPage extends StatefulWidget {
 class LogPageState extends State<LogPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  var f = NumberFormat('###,###,###,###');
   // 컬렉션명
   final String buyName = "buy_data";
   final String sellName = "sell_data";
@@ -58,15 +59,11 @@ class LogPageState extends State<LogPage> {
           title: Container(
             width: MediaQuery.of(context).size.width,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    GestureDetector(onTap: (){},
-                        child: Text('평가 금액 :  4980000원',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),)),
-                  ],
-                ),
-                Text('총 수익금 :  4900000원  수익률 : %40',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold)),
+                GestureDetector(onTap: (){},
+                    child: Text('평가 금액 :  ${f.format(4980000)}원',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.blueAccent),)),
+                Text('총 수익금 :  ${f.format(4980000)}원  수익률 : %40',style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: Colors.blueAccent)),
               ],
             ),
           ),
@@ -207,8 +204,8 @@ class LogPageState extends State<LogPage> {
                         ),
                       ),
                       subtitle: Text(
-                        "매수가 : ${document[buyPrice]}원"
-                            "\n평가금액 : ${document[buyTotal]}원",
+                        "매수가 : ${f.format(int.parse(document[buyPrice]))}원"
+                            "\n평가금액 : ${f.format(int.parse(document[buyTotal]))}원",
                         style: TextStyle(
                           fontSize: 12.5,
                           fontFamily: 'RobotoMono',

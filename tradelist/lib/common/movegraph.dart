@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tradelist/pages/line_chart/line_chart_page.dart';
 import 'package:tradelist/pages/line_chart/line_chart.dart';
 import 'package:tradelist/pages/pie_chart/pie_chart_page.dart';
 import 'package:tradelist/pages/saleshomepage.dart';
@@ -26,7 +25,7 @@ class _MoveGraphState extends State<MoveGraph> {
   final _curve = Curves.easeInOutCubic;
   final _pages = [
     GraphPage(),
-    LineChartPage(),
+    LineGraph(),
     PieChartPage(),
     // BarChartPage3(),
   ];
