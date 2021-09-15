@@ -1,14 +1,13 @@
-
 import 'dart:math';
-
 import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/src/text_element.dart' as TextElement;
+import 'package:charts_flutter/src/text_style.dart' as style;
+import 'package:intl/intl.dart';
 import 'package:tradelist/common/Constants.dart';
-import 'package:tradelist/pages/sales.dart';
-
-import 'package:flutter/widgets.dart' hide Element;
+import 'package:tradelist/model/item_model.dart';
 
 class LineGraph extends StatefulWidget {
   @override
@@ -38,7 +37,7 @@ class _LineGraphState extends State<LineGraph> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('꺽은선 그래프'),
+        title: Text('꺾은선 그래프'),centerTitle: true,
       ),
       body: _buildBody(context),
     );
@@ -60,16 +59,19 @@ class _LineGraphState extends State<LineGraph> {
 
           Firestore.instance
               .collection("month_result")
-              .document("0${DateTime.now().subtract(Duration(days: 7)).month}")
+              .document("00${DateTime.now().subtract(Duration(days: 7)).month}")
               .get()
               .then((DocumentSnapshot ds) {
+
             var sales2 = ds.data["month_total"];
+            print(sales2);
 
             box.write(
-                'result${DateTime.now().subtract(Duration(days: 7)).month}',
+                'result2${DateTime.now().subtract(Duration(days: 7)).month}',
                 sales2);
-            // print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
+         print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
           });
+
           return _buildChart(context, sales);
         }
       },
@@ -94,20 +96,19 @@ class _LineGraphState extends State<LineGraph> {
                   selectionModels: [
                     new charts.SelectionModelConfig(
                         changedListener: (SelectionModel model) {
-                          print( model.selectedSeries[0].measureFn(
-                              model.selectedDatum[0].index)
-                          );
-                          }
-                    )
+                      final value =model.selectedSeries[0]
+                          .measureFn(model.selectedDatum[0].index);
+
+                      CustomCircleSymbolRenderer.value=value;
+                      print(value);
+                    })
                   ],
                   animate: true,
                   animationDuration: Duration(seconds: 1),
                   behaviors: [
                     charts.LinePointHighlighter(
-                      symbolRenderer:  CustomCircleSymbolRenderer()
-                    )
+                        symbolRenderer: CustomCircleSymbolRenderer())
                   ],
-
                 ),
               ),
             ],
@@ -118,21 +119,27 @@ class _LineGraphState extends State<LineGraph> {
   }
 }
 class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
-  static String value;
+  var f = NumberFormat('###,###,###,###');
+  static int value;
+
   @override
-  void Paint(ChartCanvas canvas, Rectangle<num> bounds, {List<int> dashPattern, Color fillColor, Color strokeColor, double strokeWidthPx}) {
-    super.paint(canvas, bounds, dashPattern: dashPattern, fillColor: fillColor, strokeColor: strokeColor, strokeWidthPx: strokeWidthPx);
+
+  void paint(ChartCanvas canvas, Rectangle<num> bounds, {List<int> dashPattern, Color fillColor, FillPatternType fillPattern, Color strokeColor, double strokeWidthPx}) {
+    super.paint(canvas, bounds, dashPattern: dashPattern, fillColor: fillColor,fillPattern: fillPattern, strokeColor: strokeColor, strokeWidthPx: strokeWidthPx);
     canvas.drawRect(
         Rectangle(bounds.left -5, bounds.top -30, bounds.width + 10, bounds.height + 10),
         fill: Color.white
     );
-    // var textStyle= style.TextStyle();
-    // textStyle.color= Color.black;
-    // textStyle.fontSize= 15;
-    // canvas.drawText(
-    //     TextElement("$value", style: textStyle),
-    //     (bounds.left).round(),
-    //     (bounds.top -28).round()
-    // );
+    box.write(
+        'result${DateTime.now().subtract(Duration(days: 7)).month}',
+        value);
+    var textStyle= style.TextStyle();
+    textStyle.color= Color.black;
+    textStyle.fontSize= 15;
+    canvas.drawText(
+        TextElement.TextElement("${f.format(value)}원", style: textStyle),
+        (bounds.left).round(),
+        (bounds.top -28).round()
+    );
   }
 }
