@@ -1,3 +1,6 @@
+import 'dart:core';
+import 'dart:core';
+
 import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +19,10 @@ class BarChart extends StatefulWidget {
 }
 
 class _BarChartState extends State<BarChart> {
+  String month='';
+  int month_num = DateTime.now().subtract(Duration(days: 7)).month ;
+
+
   List<charts.Series<Sales, String>> _seriesBarData;
   List<Sales> mydata;
 
@@ -36,7 +43,7 @@ class _BarChartState extends State<BarChart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('막대 그래프'),
+        title: Text('막대 그래프'),centerTitle: true,
       ),
       body: _buildBody(context),
     );
@@ -56,9 +63,50 @@ class _BarChartState extends State<BarChart> {
               .map((documentSnapshot) => Sales.fromMap(documentSnapshot.data))
               .toList();
 
+          switch(month_num){
+            case 1: {
+              month = '001';
+            }break;
+            case 2: {
+              month = '002';
+            }break;
+            case 3: {
+              month = '003';
+            }break;
+            case 4: {
+              month = '004';
+            }break;
+            case 5: {
+              month = '005';
+            }break;
+            case 6: {
+              month = '006';
+            }break;
+            case 7: {
+              month = '007';
+            }break;
+            case 8: {
+              month = '008';
+            }break;
+            case 9: {
+              month = '009';
+            }break;
+            case 10: {
+              month = '010';
+            }break;
+            case 11: {
+              month = '011';
+            }break;
+            default : {
+              month = '012';
+            }break;
+
+          }
+
+
           Firestore.instance
               .collection("month_result")
-              .document("00${DateTime.now().subtract(Duration(days: 7)).month}")
+              .document('010')
               .get()
               .then((DocumentSnapshot ds) {
             var sales2 = ds.data["month_total"];
