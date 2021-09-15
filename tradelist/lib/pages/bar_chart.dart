@@ -1,17 +1,21 @@
+import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:tradelist/common/Constants.dart';
-import 'package:tradelist/pages/sales.dart';
+import 'package:tradelist/model/item_model.dart';
 
-class GraphPage extends StatefulWidget {
+import 'line_chart/line_chart.dart';
+
+
+class BarChart extends StatefulWidget {
   @override
-  _GraphPageState createState() {
-    return _GraphPageState();
+  _BarChartState createState() {
+    return _BarChartState();
   }
 }
 
-class _GraphPageState extends State<GraphPage> {
+class _BarChartState extends State<BarChart> {
   List<charts.Series<Sales, String>> _seriesBarData;
   List<Sales> mydata;
 
@@ -54,13 +58,13 @@ class _GraphPageState extends State<GraphPage> {
 
           Firestore.instance
               .collection("month_result")
-              .document("0${DateTime.now().subtract(Duration(days: 7)).month}")
+              .document("00${DateTime.now().subtract(Duration(days: 7)).month}")
               .get()
               .then((DocumentSnapshot ds) {
             var sales2 = ds.data["month_total"];
 
             box.write(
-                'result${DateTime.now().subtract(Duration(days: 7)).month}',
+                'result2${DateTime.now().subtract(Duration(days: 7)).month}',
                 sales2);
             // print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
           });
@@ -84,11 +88,23 @@ class _GraphPageState extends State<GraphPage> {
               ),
               Expanded(
                 child: charts.BarChart(
-                  _seriesBarData,
-                  selectionModels: [new charts.SelectionModelConfig()],
+                   _seriesBarData,
+                  selectionModels: [
+                    new charts.SelectionModelConfig(
+                        changedListener: (SelectionModel model) {
+                          final value =model.selectedSeries[0]
+                              .measureFn(model.selectedDatum[0].index);
+
+                          CustomCircleSymbolRenderer.value=value;
+                          print(value);
+                        })
+                  ],
                   animate: true,
                   animationDuration: Duration(seconds: 1),
-                  behaviors: [],
+                  behaviors: [
+                    charts.LinePointHighlighter(
+                        symbolRenderer: CustomCircleSymbolRenderer())
+                  ],
                 ),
               ),
             ],

@@ -7,7 +7,7 @@ import 'package:tradelist/pages/pageviewer.dart';
 import 'package:tradelist/pages/tradelist.dart';
 import 'package:tradelist/utilites/toolsUtilities.dart';
 
-import 'saleshomepage.dart';
+import 'bar_chart.dart';
 
 
 
