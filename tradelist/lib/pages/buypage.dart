@@ -343,10 +343,10 @@ class LogPageState extends State<LogPage> {
   }
 
   // 문서 갱신 (Update)
-  void updateDoc(String docID, String name, String description) {
+  void updateDoc(String docID, String name, String description, String su) {
     Firestore.instance.collection(buyName).document(docID).updateData({
       title: name,
-      buyPrice: docID,
+      buyPrice: su,
       buyTotal: description,
     });
   }
@@ -472,7 +472,7 @@ class LogPageState extends State<LogPage> {
                 ),
                 TextField(
                   decoration: InputDecoration(labelText: "수량"),
-                  controller: _undPriceCon,
+                  controller: _undSuCon,
                 )
               ],
             ),
@@ -493,7 +493,7 @@ class LogPageState extends State<LogPage> {
                 if (_undNameCon.text.isNotEmpty &&
                     _undPriceCon.text.isNotEmpty) {
                   updateDoc(
-                      doc.documentID, _undNameCon.text, _undPriceCon.text);
+                      doc.documentID, _undNameCon.text, _undPriceCon.text,_undSuCon.text);
                 }
                 Navigator.pop(context);
               },

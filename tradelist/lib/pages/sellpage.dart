@@ -88,11 +88,11 @@ class SellPageState extends State<SellPage> {
                             // 리스트에 사용할 데이터 리스트
                             groupBy: (element) => element.sellTime.split(' ')[0],
                             // 데이터 리스트 중 그룹을 지정할 항목
-                            groupComparator: (value1, value2) => value1.compareTo(value2),
+                            groupComparator: (value1, value2) => value2.compareTo(value1),
                             //groupBy 항목을 비교할 비교기
                             itemComparator: (item1, item2) => item1.sellTime
-                                .split(' ')[1]
-                                .compareTo(item2.sellTime.split(' ')[1]),
+                                .split(' ')[0]
+                                .compareTo(item2.sellTime.split(' ')[0]),
                             // 그룹안의 데이터 비교기
                             order: GroupedListOrder.DESC,
                             //정렬(오름차순)
@@ -162,7 +162,7 @@ class SellPageState extends State<SellPage> {
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
-                                            subtitle: Text(
+                                            subtitle: Text("${document['sellTime'].split(' ')[1]}"
                                               "\n거래차익 : ${f.format(int.parse(document[sellTotal]))}원",
                                               style: TextStyle(
                                                 fontSize: 12.5,
