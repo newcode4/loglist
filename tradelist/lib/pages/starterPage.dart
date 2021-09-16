@@ -2,7 +2,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tradelist/common/movegraph.dart';
-import 'package:tradelist/pages/logpage.dart';
+import 'package:tradelist/pages/buypage.dart';
 import 'package:tradelist/pages/pageviewer.dart';
 import 'package:tradelist/pages/tradelist.dart';
 import 'package:tradelist/utilites/toolsUtilities.dart';

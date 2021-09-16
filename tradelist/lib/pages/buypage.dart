@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:tradelist/common/Constants.dart';
 import 'package:tradelist/common/dialog.dart';
@@ -24,18 +26,26 @@ class LogPage extends StatefulWidget {
 class LogPageState extends State<LogPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+
   var f = NumberFormat('###,###,###,###');
   // 컬렉션명
   final String buyName = "buy_data";
   final String sellName = "sell_data";
 
+  String vtitle ='';
+  String vtotal ='';
+  String vvolume ='';
+  String vprice ='';
+  String vtime ='';
+
   bool Tabchange = false;
 
   // 필드명
-  final String title = "title";
+  String title = "title";
   final String buyPrice = "buyPrice";
   final String buyTotal = "buyTotal";
   final String buyVolume = "buyVolume";
+  final String buyTime = "buyTime";
 
   // final String buyDatetime = "buyDatetime";
 
@@ -51,6 +61,7 @@ class LogPageState extends State<LogPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -98,6 +109,7 @@ class LogPageState extends State<LogPage> {
                         case ConnectionState.waiting:
                           return Text("Loading...");
                         default:
+
                           return TabBarView(
                             children: <Widget>[
                               list_1(snapshot),
@@ -106,7 +118,10 @@ class LogPageState extends State<LogPage> {
                           );
                       }
                       // list_1(snapshot);
-                    })),
+
+                    }
+
+                )),
           ],
         ),
 
@@ -122,6 +137,67 @@ class LogPageState extends State<LogPage> {
       ),
     );
   }
+
+
+
+
+  // groupedList(AsyncSnapshot<QuerySnapshot> snapshot) {
+  //    snapshot.data.documents.map((DocumentSnapshot document) {
+  //      vtitle = document.data[title];
+  //      vtime = document.data[buyTime];
+  //      vprice = document.data[buyPrice];
+  //      vvolume = document.data[buyVolume];
+  //      vtotal = document.data[buyTotal];
+  //
+  //
+  //      List<ItemBuyModel> _elements = [
+  //        ItemBuyModel(title: vtitle ?? 'default',
+  //            buyPrice: vprice ?? 'default',
+  //            buyTime: vtime ?? 'default',
+  //            buyTotal: vprice ?? 'default',
+  //            buyVolume: vvolume ?? 'default'),
+  //
+  //
+  //      ];
+  //
+  //      DateTime dat = DateTime.now();
+  //      print(dat);
+  //      return GroupedListView<ItemBuyModel, String>(
+  //        elements: _elements,
+  //        groupBy: (element) => element.buyTime.split(' ')[0],
+  //        groupComparator: (value1, value2) => value1.compareTo(value2),
+  //        itemComparator: (item1, item2) =>
+  //            item1.buyTime.split(' ')[1].compareTo(item2.buyTime.split(' ')[1]),
+  //        order: GroupedListOrder.DESC,
+  //        useStickyGroupSeparators: false,
+  //        groupSeparatorBuilder: (String value) =>
+  //            Padding(
+  //              padding: const EdgeInsets.all(8.0),
+  //              child: Text(
+  //                value,
+  //                textAlign: TextAlign.center,
+  //                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+  //              ),
+  //            ),
+  //        itemBuilder: (c, ItemBuyModel element) {
+  //          return Card(
+  //            elevation: 8.0,
+  //            margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+  //            child: Container(
+  //              child: ListTile(
+  //                contentPadding:
+  //                EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+  //                title: Text('${element.title} / '),
+  //                trailing: Text(element.buyTime.split(' ')[1]),
+  //              ),
+  //            ),
+  //          );
+  //        },
+  //      );
+  //    });
+  // }
+
+
 
   ListView list_1(AsyncSnapshot<QuerySnapshot> snapshot) {
     Future<void> insertData(final product) async {
@@ -217,7 +293,6 @@ class LogPageState extends State<LogPage> {
     );
   }
 
-
   /// Firestore CRUD Logic
 
   // 문서 생성 (Create)
@@ -253,6 +328,7 @@ class LogPageState extends State<LogPage> {
         .get()
         .then((doc) {
       showReadDocSnackBar(doc);
+
     });
   }
 
@@ -440,3 +516,5 @@ class LogPageState extends State<LogPage> {
         .toString();
   }
 }
+
+
