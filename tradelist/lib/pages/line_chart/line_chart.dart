@@ -57,21 +57,6 @@ class _LineGraphState extends State<LineGraph> {
               .map((documentSnapshot) => Sales.fromMap(documentSnapshot.data))
               .toList();
 
-          Firestore.instance
-              .collection("month_result")
-              .document("00${DateTime.now().subtract(Duration(days: 7)).month}")
-              .get()
-              .then((DocumentSnapshot ds) {
-
-            var sales2 = ds.data["month_total"];
-            print(sales2);
-
-            box.write(
-                'result2${DateTime.now().subtract(Duration(days: 7)).month}',
-                sales2);
-         print(box.read('result${DateTime.now().subtract(Duration(days:7)).month}'));
-          });
-
           return _buildChart(context, sales);
         }
       },

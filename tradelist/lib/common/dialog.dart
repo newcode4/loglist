@@ -204,16 +204,18 @@ showDialogFunc2(context, title) {
                           CupertinoButton(
                               child: Text('저장'),
                               onPressed: () {
-                                final Timestamp time = Timestamp.now();
-                                final String btime = time.toString();
+                                final DateTime now = DateTime.now();
+                                final String btime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
                                 final String bname = title.toString();
                                 final String bprice = price.text;
                                 final String bvolume = volume.text;
                                 final String btotal = result.toString();
 
+
+
                                 final ItemBuyModel product = ItemBuyModel(
                                     title: bname,
-                                    // buyDatetime: btime,
+                                    buyTime: btime,
                                     buyPrice: bprice,
                                     buyVolume: bvolume,
                                     buyTotal: btotal);
@@ -610,8 +612,8 @@ LogDiaLog(context, String title, String Volume, int datatotal) {
                               onPressed: () {
                                 double data = controller.total - datatotal;
 
-                                final Timestamp time = Timestamp.now();
-                                final String btime = time.toString();
+                                final DateTime now = DateTime.now();
+                                final String btime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
                                 final String bname = title.toString();
                                 final String bprice = price.text;
                                 final String bvolume = Volume.toString();
@@ -622,7 +624,7 @@ LogDiaLog(context, String title, String Volume, int datatotal) {
 
                                 final ItemSellModel product = ItemSellModel(
                                   title: bname,
-                                  // buyDatetime: btime,
+                                  sellTime: btime,
                                   sellPrice: bprice,
                                   sellVolume: bvolume,
                                   sellTotal: btotal,

@@ -4,10 +4,11 @@ class ItemBuyModel {
   String title;
   String buyPrice;
   String buyTotal;
+  String buyTime;
   String buyVolume;
   // String buyDatetime;
 
-  ItemBuyModel({this.title, this.buyPrice, this.buyTotal ,this.buyVolume});
+  ItemBuyModel({this.title, this.buyPrice, this.buyTotal ,this.buyVolume,this.buyTime});
 
 
   Map<String, dynamic> toMap() => {
@@ -15,6 +16,7 @@ class ItemBuyModel {
     'buyPrice': this.buyPrice,
     'buyTotal': this.buyTotal,
     'buyVolume': this.buyVolume,
+    'butTime': this.buyTime
 
     // 'buyDatetime': this.buyDatetime
   };
@@ -22,6 +24,7 @@ class ItemBuyModel {
 
 class ItemSellModel {
   String title;
+  String sellTime;
   String sellPrice;
   String sellTotal;
   String sellVolume;
@@ -29,7 +32,7 @@ class ItemSellModel {
 
   // String buyDatetime;
 
-  ItemSellModel({this.title, this.sellPrice, this.sellTotal ,this.sellVolume});
+  ItemSellModel({this.title, this.sellPrice, this.sellTotal ,this.sellVolume,this.sellTime});
 
 
   Map<String, dynamic> toMap() => {
@@ -37,6 +40,7 @@ class ItemSellModel {
     'sellPrice': this.sellPrice,
     'sellTotal': this.sellTotal,
     'sellVolume': this.sellVolume,
+    'sellTime': this.sellTime
 
 
     // 'buyDatetime': this.buyDatetime
