@@ -41,7 +41,11 @@ class DashPage extends StatelessWidget {
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
+<<<<<<< HEAD
                       color: Colors.black.withOpacity(0.7) ,
+=======
+                      color: Colors.black.withOpacity(0.7),
+>>>>>>> origin/master
                       blurRadius: 20,
                       spreadRadius: 10,
                     )
