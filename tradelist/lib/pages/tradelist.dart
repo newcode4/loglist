@@ -2,12 +2,14 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:azlistview/azlistview.dart';
-import 'package:github_language_colors/github_language_colors.dart';
+
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:tradelist/common/dialog.dart';
+import 'package:tradelist/library/language.dart';
 import 'package:tradelist/model/models.dart';
 import 'package:tradelist/common/res.dart';
 import 'package:tradelist/common/utils.dart';
-import '../common/dialog.dart';
+
 
 class TradeList extends StatefulWidget {
   const TradeList({
@@ -202,7 +204,7 @@ class _TradeListState extends State<TradeList> {
                   ),
                   indexHintAlignment: Alignment.centerRight,
                   indexHintTextStyle:
-                      TextStyle(fontSize: 24.0, color: Colors.black87),
+                  TextStyle(fontSize: 24.0, color: Colors.black87),
                   indexHintOffset: Offset(-30, 0),
                 ),
               ),
@@ -213,4 +215,3 @@ class _TradeListState extends State<TradeList> {
     );
   }
 }
-

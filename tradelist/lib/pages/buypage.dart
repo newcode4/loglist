@@ -258,6 +258,8 @@ class LogPageState extends State<LogPage> {
                                           buyVolume: bvolume);
 
                                       LogDiaLog(context, bname, bvolume,data);
+
+
                                     },
                                     child: const Text('매도하기'),
                                     color: Colors.blue,
@@ -294,7 +296,6 @@ class LogPageState extends State<LogPage> {
   }
 
   /// Firestore CRUD Logic
-
   // 문서 생성 (Create)
   void createDoc(String name, String price, String volume, String result) {
     Firestore.instance.collection(buyName).add({
@@ -343,10 +344,10 @@ class LogPageState extends State<LogPage> {
   }
 
   // 문서 갱신 (Update)
-  void updateDoc(String docID, String name, String description) {
+  void updateDoc(String docID, String name, String description, String su) {
     Firestore.instance.collection(buyName).document(docID).updateData({
       title: name,
-      buyPrice: docID,
+      buyPrice: su,
       buyTotal: description,
     });
   }
@@ -472,7 +473,7 @@ class LogPageState extends State<LogPage> {
                 ),
                 TextField(
                   decoration: InputDecoration(labelText: "수량"),
-                  controller: _undPriceCon,
+                  controller: _undSuCon,
                 )
               ],
             ),
@@ -493,7 +494,7 @@ class LogPageState extends State<LogPage> {
                 if (_undNameCon.text.isNotEmpty &&
                     _undPriceCon.text.isNotEmpty) {
                   updateDoc(
-                      doc.documentID, _undNameCon.text, _undPriceCon.text);
+                      doc.documentID, _undNameCon.text, _undPriceCon.text,_undSuCon.text);
                 }
                 Navigator.pop(context);
               },
@@ -516,5 +517,3 @@ class LogPageState extends State<LogPage> {
         .toString();
   }
 }
-
-

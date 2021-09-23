@@ -1,6 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tradelist/common/Constants.dart';
+
+
 
 class BuilderController extends GetxController {
   double su;
@@ -56,6 +57,20 @@ class BuilderController extends GetxController {
     }else
     total = count*price;
     update();
+  }
+}
+class CalculationController extends GetxController {
+
+  int total = 0;
+  int money = 0;
+  int result = 0 ;
+
+  deposit(int total, int money){
+    print('total = $total');
+    print('money = $money');
+      result = (total + money);
+      box.write('money1',result);
+      update();
   }
 }
 
