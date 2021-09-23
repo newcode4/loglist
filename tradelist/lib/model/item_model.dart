@@ -74,3 +74,21 @@ class Sales {
   @override
   String toString() => "Record<$title:$sellVolume:$month_total:$sellPrice:$sellMonth:$month>";
 }
+
+class User {
+
+  String money;
+
+  User(this.money);
+
+  User.fromMap(Map<String, dynamic> map)
+      :
+
+  // assert(map['title'] != null),
+  // assert(map['sellVolume'] != null),
+
+        money = map['money'];
+
+  @override
+  String toString() => "Record<$money>";
+}

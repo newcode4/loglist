@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:tradelist/common/dialog.dart';
 import 'package:tradelist/model/GetxController.dart';
 import 'package:tradelist/model/item_model.dart';
 import 'package:tradelist/utilites/toolsUtilities.dart';
@@ -51,7 +52,7 @@ class SellPageState extends State<SellPage> {
               child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance
                       .collection(sellName)
-                      // .orderBy(buyDatetime, descending: true)
+                  // .orderBy(buyDatetime, descending: true)
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -61,124 +62,85 @@ class SellPageState extends State<SellPage> {
                       case ConnectionState.waiting:
                         return Text("Loading...");
                       default:
-                        return new ListView(
-                            children: snapshot.data.documents
-                                .map((DocumentSnapshot document) {
-                          bool chage = true;
+                        return ListView(
+                          children: snapshot.data.documents
+                              .map((DocumentSnapshot document) {
+                            bool chage =true;
 
-                          if (double.parse(document[sellTotal]) > 0)
-                            chage = true;
-                          if (double.parse(document[sellTotal]) < 0)
-                            chage = false;
-                          // Timestamp ts = document[buyDatetime];
-                          // String dt = timestampToStrDateTime(ts);
-                          List<ItemSellModel> elements = [
-                            ItemSellModel(
-                                title: document[title],
-                                sellTime: document['sellTime'],
-                                sellTotal: document[sellTotal],
-                                sellPrice: document[sellPrice],
-                                sellVolume: document[sellVolume]),
-                          ];
+                            if(double.parse(document[sellTotal])>0) chage = true;
+                            if(double.parse(document[sellTotal])<0) chage = false;
+                            // Timestamp ts = document[buyDatetime];
+                            // String dt = timestampToStrDateTime(ts);
+                            return Card(
+                                elevation: 4,
+                                margin: EdgeInsets.all(8),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(13)),
+                                color: Colors.white,
+                                child: InkWell(
+                                  // Read Document
+                                    onTap: () {
+                                      showDocument(document.documentID);
+                                    },
+                                    // Update or Delete Document
 
-                          print(document['sellTime']);
-                          return GroupedListView<ItemSellModel, String>(
-                            shrinkWrap: true,
-                            elements: elements,
-                            // 리스트에 사용할 데이터 리스트
-                            groupBy: (element) => element.sellTime.split(' ')[0],
-                            // 데이터 리스트 중 그룹을 지정할 항목
-                            groupComparator: (value1, value2) => value1.compareTo(value2),
-                            //groupBy 항목을 비교할 비교기
-                            itemComparator: (item1, item2) => item1.sellTime
-                                .split(' ')[1]
-                                .compareTo(item2.sellTime.split(' ')[1]),
-                            // 그룹안의 데이터 비교기
-                            order: GroupedListOrder.DESC,
-                            //정렬(오름차순)
-                            useStickyGroupSeparators: false,
-                            //가장 위에 그룹 이름을 고정시킬 것인지
-                            groupSeparatorBuilder: (String value) => Padding(
-                              //그룹 타이틀 모양
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                value,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            itemBuilder: (c, element) {
-                              return Card(
-                                  elevation: 4,
-                                  margin: EdgeInsets.all(8),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(13)),
-                                  color: Colors.white,
-                                  child: InkWell(
-                                      // Read Document
-                                      onTap: () {
-                                        showDocument(document.documentID);
-                                      },
-                                      // Update or Delete Document
-
-                                      child: Container(
-                                          padding: const EdgeInsets.all(8),
-                                          child: ListTile(
-                                            trailing: Container(
-                                              width: 132,
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    ButtonBar(
-                                                      children: [
-                                                        RaisedButton(
-                                                          onPressed: () {},
-                                                          child: const Text(
-                                                              '거래내역'),
-                                                          color: Colors.blue,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    IconButton(
-                                                        icon: Icon(Icons.delete,
-                                                            color: Colors.red),
+                                    child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        child: ListTile(
+                                          trailing: Container(
+                                            width: 150,
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                                children: <Widget>[
+                                                  ButtonBar(
+                                                    children: [
+                                                      RaisedButton(
                                                         onPressed: () {
-                                                          deleteDoc(document
+                                                          FinishDiaLog(context,document[title],document
                                                               .documentID);
-                                                        }),
-                                                  ]),
+                                                        },
+                                                        child:
+                                                        const Text('거래내역'),
+                                                        color: Colors.blue,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  IconButton(
+                                                      icon: Icon(Icons.delete,
+                                                          color: Colors.red),
+                                                      onPressed: () {
+                                                        deleteDoc(document
+                                                            .documentID);
+                                                      }),
+                                                ]),
+                                          ),
+                                          title: Text(
+                                            document[title],
+                                            style: TextStyle(
+                                              color:  chage? Colors.redAccent: Colors.blue,
+                                              fontSize: 16.5,
+                                              fontFamily: 'RobotoMono',
+                                              fontWeight: FontWeight.w700,
                                             ),
-                                            title: Text(
-                                              document[title],
-                                              style: TextStyle(
-                                                color: chage
-                                                    ? Colors.redAccent
-                                                    : Colors.blue,
-                                                fontSize: 16.5,
-                                                fontFamily: 'RobotoMono',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            subtitle: Text(
+                                          ),
+                                          subtitle: Text("거래일 : ${document['sellTime'].split(' ')[0]}"
                                               "\n거래차익 : ${f.format(int.parse(document[sellTotal]))}원",
-                                              style: TextStyle(
-                                                fontSize: 12.5,
-                                                fontFamily: 'RobotoMono',
-                                                fontWeight: FontWeight.w700,
-                                              ),
+                                            style: TextStyle(
+                                              fontSize: 12.5,
+                                              fontFamily: 'RobotoMono',
+                                              fontWeight: FontWeight.w700,
                                             ),
-                                          ))));
-                            },
-                          );
-                        }).toList());
+                                          ),
+                                        ))));
+                          }).toList(),
+                        );
                     }
                   }
-                  // list_1(snapshot);
+                // list_1(snapshot);
 
-                  )),
+              )),
         ],
       ),
 
@@ -187,7 +149,6 @@ class SellPageState extends State<SellPage> {
   }
 
   /// Firestore CRUD Logic
-
   trans(String formatname) {
     NumberFormat('###,###,###,###').format(formatname).replaceAll(' ', '');
   }
@@ -226,7 +187,7 @@ class SellPageState extends State<SellPage> {
           duration: Duration(seconds: 5),
           content: Text(
             "${doc[title]}\n\n"
-            "거래 로그 적을 예정",
+                "거래 로그 적을 예정",
             style: TextStyle(color: Colors.black),
           ),
           // "\n$buyDatetime: ${timestampToStrDateTime(doc[buyDatetime])}"),

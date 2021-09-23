@@ -1,18 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:tradelist/common/Constants.dart';
+import 'package:tradelist/common/dialog.dart';
+import 'package:tradelist/model/GetxController.dart';
 
 class DashPage extends StatelessWidget {
   DashPage({Key key, this.title}) : super(key: key);
 
+  Firestore firestore = Firestore.instance;
+
+  final controller = Get.put(CalculationController());
+
   final String title;
 
+  var f = NumberFormat('###,###,###,###');
 
   @override
   Widget build(BuildContext context) {
+    Get.put(CalculationController());
+    firestore.collection('user_money_log').document('money').get()
+    .then((DocumentSnapshot ds) {
+      box.write('money', ds.data["money"]);
+      print(box.read('money'));
+    });
+
+    final int total = int.parse(box.read('money')) ;
+
+
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Column(
           children: <Widget>[
             Container(
@@ -21,7 +41,7 @@ class DashPage extends StatelessWidget {
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.7),
+                      color: Colors.black.withOpacity(0.7) ,
                       blurRadius: 20,
                       spreadRadius: 10,
                     )
@@ -36,18 +56,21 @@ class DashPage extends StatelessWidget {
                   SizedBox(
                     height: 40,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      '대쉬보드',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    ),
+                  Text(
+                    '대쉬보드',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 8,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -57,13 +80,17 @@ class DashPage extends StatelessWidget {
                             alignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               RaisedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  DepositDialog(context, total);
+                                },
                                 child: Text('입금'),
                                 color: Colors.blue,
                               ),
-                              SizedBox(
-                                width: 40,
-                              ),
+                              Text('수익률 : %',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  )),
                               RaisedButton(
                                 onPressed: () {},
                                 child: Text('출금'),
@@ -76,23 +103,26 @@ class DashPage extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Text('투자금액 : 원',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 80,
-                              ),
+                              GetBuilder<CalculationController>(
+                                  init: CalculationController(),
+                                  builder: (_) {
+                                    // box.write('moeny',_.result);
+                                    return Text(
+                                        "투자금액  : ${_.result}원",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                        ));
+                                  }),
                             ],
                           ),
                           Row(
                             children: [
                               Text('수익금     : 원',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  )),
                               SizedBox(
                                 width: 100,
                               ),
@@ -102,9 +132,9 @@ class DashPage extends StatelessWidget {
                             children: [
                               Text('합계         : 원',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold))
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ))
                             ],
                           )
                         ],
@@ -309,5 +339,3 @@ class DashPage extends StatelessWidget {
     );
   }
 }
-
-
